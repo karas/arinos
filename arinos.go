@@ -2,6 +2,7 @@ package arinos
 
 type Arinos struct {
 	LocalHost bool
+	Options   *Options
 }
 
 type Options struct {
@@ -10,9 +11,16 @@ type Options struct {
 
 type Option func(*Options)
 
-func New(isLocalhost bool) (arinos *Arinos) {
+func New(isLocalhost bool, options ...Option) (arinos *Arinos) {
+	args := &Options{
+		Port: 8000,
+	}
+	for _, option := range options {
+		option(args)
+	}
 	return &Arinos{
 		LocalHost: isLocalhost,
+		Options:   args,
 	}
 }
 
