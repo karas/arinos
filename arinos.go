@@ -1,14 +1,23 @@
 package arinos
 
 type Arinos struct {
-	Options *Options
+	LocalHost bool
 }
 
 type Options struct {
-	LocalHost bool
-	Port      int
+	Port int
 }
 
-func New() (arinos *Arinos) {
-	return &Arinos{}
+type Option func(*Options)
+
+func New(isLocalhost bool) (arinos *Arinos) {
+	return &Arinos{
+		LocalHost: isLocalhost,
+	}
+}
+
+func Port(portNumber int) Option {
+	return func(args *Options) {
+		args.Port = portNumber
+	}
 }
